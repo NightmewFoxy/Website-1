@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Reset some default styles */
 * {
     margin: 0;
@@ -32,3 +33,39 @@ footer {
     color: white;
     text-align: center;
 }
+=======
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #333;
+}
+
+header {
+    text-align: center;
+    margin-top: 20px;
+}
+
+main {
+    width: 80%;
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+footer {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+}
+>>>>>>> 53ae2e335b7a3baf8ba82df5c39aa7523c663470
