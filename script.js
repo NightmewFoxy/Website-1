@@ -239,12 +239,32 @@
     }
 
     function drawCloud(x, y, s) {
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
         ctx.beginPath();
         ctx.arc(x, y, 18 * s, 0, Math.PI * 2);
         ctx.arc(x + 18 * s, y - 6 * s, 22 * s, 0, Math.PI * 2);
         ctx.arc(x + 38 * s, y, 18 * s, 0, Math.PI * 2);
         ctx.arc(x + 20 * s, y + 8 * s, 16 * s, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#8aa6b8';
+        ctx.lineWidth = 1.6 * s;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(x + 12 * s, y - 2 * s);
+        ctx.quadraticCurveTo(x + 15 * s, y - 6 * s, x + 18 * s, y - 2 * s);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x + 24 * s, y - 2 * s);
+        ctx.quadraticCurveTo(x + 27 * s, y - 6 * s, x + 30 * s, y - 2 * s);
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(255, 150, 175, 0.45)';
+        ctx.beginPath();
+        ctx.arc(x + 11 * s, y + 4 * s, 2.2 * s, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x + 31 * s, y + 4 * s, 2.2 * s, 0, Math.PI * 2);
         ctx.fill();
     }
 
@@ -286,21 +306,59 @@
         ctx.lineWidth = 2;
         ctx.strokeRect(x - 4, topH - 28, PIPE_W + 8, 28);
         ctx.strokeRect(x - 4, bottomY, PIPE_W + 8, 28);
+
+        const fx = x + PIPE_W / 2;
+        const fyTop = topH - 14;
+        ctx.fillStyle = '#222';
+        ctx.beginPath();
+        ctx.arc(fx - 9, fyTop - 1, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(fx + 9, fyTop - 1, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#222';
+        ctx.lineWidth = 1.6;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(fx, fyTop + 3, 3, 0.15 * Math.PI, 0.85 * Math.PI);
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(255, 150, 175, 0.5)';
+        ctx.beginPath();
+        ctx.arc(fx - 14, fyTop + 3, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(fx + 14, fyTop + 3, 2.2, 0, Math.PI * 2);
+        ctx.fill();
     }
 
     function drawGround() {
         const y = H - GROUND_H;
-        ctx.fillStyle = '#ded895';
-        ctx.fillRect(0, y, W, GROUND_H);
-
-        ctx.fillStyle = '#c8b96d';
-        for (let x = -groundOffset; x < W; x += 24) {
-            ctx.fillRect(x, y, 12, 8);
+        ctx.fillStyle = '#7dc97a';
+        ctx.fillRect(0, y, W, 14);
+        ctx.fillStyle = '#5cb74a';
+        for (let x = -groundOffset; x < W; x += 18) {
+            ctx.fillRect(x, y - 2, 3, 4);
+            ctx.fillRect(x + 8, y - 1, 2, 3);
         }
+        for (let x = -groundOffset * 0.6; x < W; x += 90) {
+            const cx = x + 30;
+            const cy = y + 4;
+            ctx.fillStyle = '#ff9ec0';
+            ctx.beginPath();
+            ctx.arc(cx, cy - 2, 2, 0, Math.PI * 2);
+            ctx.arc(cx - 2, cy, 2, 0, Math.PI * 2);
+            ctx.arc(cx + 2, cy, 2, 0, Math.PI * 2);
+            ctx.arc(cx, cy + 2, 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ffe66e';
+            ctx.beginPath();
+            ctx.arc(cx, cy, 1.3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.fillStyle = '#d4b573';
+        ctx.fillRect(0, y + 14, W, 6);
         ctx.fillStyle = '#a87a3c';
-        ctx.fillRect(0, y + 8, W, 6);
-        ctx.fillStyle = '#7d5a2c';
-        ctx.fillRect(0, y + 14, W, GROUND_H - 14);
+        ctx.fillRect(0, y + 20, W, GROUND_H - 20);
     }
 
     function drawJetpackPickup(p) {
@@ -390,55 +448,101 @@
 
     function drawBird() {
         const jet = jetpackTime > 0;
+        const blink = (frame % 220 < 6);
         ctx.save();
         ctx.translate(bird.x, bird.y);
         ctx.rotate(bird.rot);
 
         if (jet) {
-            ctx.fillStyle = '#444';
+            ctx.fillStyle = '#555';
             ctx.strokeStyle = '#222';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.roundRect(-18, -8, 8, 18, 2);
+            ctx.roundRect(-19, -8, 9, 20, 3);
             ctx.fill();
             ctx.stroke();
-            ctx.fillStyle = '#d22';
-            ctx.fillRect(-19, -10, 10, 3);
+            ctx.fillStyle = '#ff5566';
+            ctx.fillRect(-20, -10, 11, 3);
         }
 
         const wingFlap = jet ? 0 : (state === 'playing' ? Math.sin(frame * 0.4) * 4 : 0);
+        const breath = Math.sin(frame * 0.08) * 0.6;
 
-        ctx.fillStyle = '#f7d51d';
+        ctx.strokeStyle = '#7a5a18';
+        ctx.lineWidth = 1.6;
+        ctx.lineCap = 'round';
         ctx.beginPath();
-        ctx.arc(0, 0, bird.r, 0, Math.PI * 2);
+        ctx.moveTo(-3, -bird.r + 1);
+        ctx.lineTo(-4, -bird.r - 5);
+        ctx.moveTo(1, -bird.r);
+        ctx.lineTo(1, -bird.r - 7);
+        ctx.moveTo(6, -bird.r + 1);
+        ctx.lineTo(7, -bird.r - 5);
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffe355';
+        ctx.beginPath();
+        ctx.arc(0, breath, bird.r + 1, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = '#553';
+        ctx.strokeStyle = '#7a5a18';
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        ctx.fillStyle = '#e89c1f';
+        ctx.fillStyle = '#f0b428';
         ctx.beginPath();
-        ctx.ellipse(-2, 4 + wingFlap, 10, 6, -0.3, 0, Math.PI * 2);
+        ctx.ellipse(-3, 5 + wingFlap + breath, 9, 5.5, -0.3, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
+
+        ctx.fillStyle = 'rgba(255, 130, 160, 0.55)';
+        ctx.beginPath();
+        ctx.arc(-5, 4 + breath, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(13, 4 + breath, 3, 0, Math.PI * 2);
+        ctx.fill();
 
         ctx.fillStyle = 'white';
+        ctx.strokeStyle = '#7a5a18';
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.arc(7, -5, 5, 0, Math.PI * 2);
+        ctx.arc(2, -5 + breath, 4.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
-        ctx.fillStyle = '#222';
         ctx.beginPath();
-        ctx.arc(8, -5, 2.4, 0, Math.PI * 2);
+        ctx.arc(11, -5 + breath, 4.5, 0, Math.PI * 2);
         ctx.fill();
+        ctx.stroke();
 
-        ctx.fillStyle = '#f08a1f';
+        if (blink) {
+            ctx.strokeStyle = '#7a5a18';
+            ctx.lineWidth = 1.8;
+            ctx.beginPath();
+            ctx.moveTo(-2, -5 + breath);
+            ctx.lineTo(6, -5 + breath);
+            ctx.moveTo(7, -5 + breath);
+            ctx.lineTo(15, -5 + breath);
+            ctx.stroke();
+        } else {
+            ctx.fillStyle = '#222';
+            ctx.beginPath();
+            ctx.arc(2.5, -5 + breath, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(11.5, -5 + breath, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        ctx.fillStyle = '#f5a020';
+        ctx.strokeStyle = '#7a5a18';
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.moveTo(13, 0);
-        ctx.lineTo(24, -2);
-        ctx.lineTo(24, 4);
-        ctx.closePath();
+        ctx.ellipse(8, 5 + breath, 9, 4, 0, 0, Math.PI * 2);
         ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, 5 + breath);
+        ctx.lineTo(16, 5 + breath);
         ctx.stroke();
 
         ctx.restore();
