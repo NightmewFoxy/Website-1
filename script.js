@@ -523,7 +523,6 @@
 
     function drawBird() {
         const jet = jetpackTime > 0;
-        const blink = (frame % 220 < 6);
         ctx.save();
         ctx.translate(bird.x, bird.y);
         ctx.rotate(bird.rot);
@@ -541,97 +540,73 @@
         }
 
         const wingFlap = jet ? 0 : (state === 'playing' ? Math.sin(frame * 0.4) * 4 : 0);
-        const breath = Math.sin(frame * 0.08) * 0.6;
 
-        const haloGrd = ctx.createRadialGradient(0, breath, bird.r - 4, 0, breath, bird.r + 10);
-        haloGrd.addColorStop(0, 'rgba(0, 240, 255, 0.5)');
-        haloGrd.addColorStop(1, 'rgba(0, 240, 255, 0)');
-        ctx.fillStyle = haloGrd;
+        const halo = ctx.createRadialGradient(0, 0, bird.r - 2, 0, 0, bird.r + 14);
+        halo.addColorStop(0, 'rgba(255, 16, 160, 0.28)');
+        halo.addColorStop(0.6, 'rgba(0, 240, 255, 0.18)');
+        halo.addColorStop(1, 'rgba(0, 240, 255, 0)');
+        ctx.fillStyle = halo;
         ctx.beginPath();
-        ctx.arc(0, breath, bird.r + 10, 0, Math.PI * 2);
+        ctx.arc(0, 0, bird.r + 14, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.strokeStyle = '#00f0ff';
-        ctx.lineWidth = 1.6;
-        ctx.lineCap = 'round';
+        ctx.fillStyle = '#f7d51d';
         ctx.beginPath();
-        ctx.moveTo(-3, -bird.r + 1);
-        ctx.lineTo(-4, -bird.r - 5);
-        ctx.moveTo(1, -bird.r);
-        ctx.lineTo(1, -bird.r - 9);
-        ctx.moveTo(6, -bird.r + 1);
-        ctx.lineTo(7, -bird.r - 5);
-        ctx.stroke();
-        const ledOn = Math.floor(frame / 15) % 2 === 0;
-        ctx.fillStyle = ledOn ? '#ff10a0' : '#440022';
-        ctx.beginPath();
-        ctx.arc(1, -bird.r - 10, 1.7, 0, Math.PI * 2);
+        ctx.arc(0, 0, bird.r, 0, Math.PI * 2);
         ctx.fill();
-
-        ctx.fillStyle = '#ffe355';
-        ctx.beginPath();
-        ctx.arc(0, breath, bird.r + 1, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = '#00f0ff';
+        ctx.strokeStyle = '#553';
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        ctx.fillStyle = '#f0b428';
+        ctx.fillStyle = '#e89c1f';
         ctx.beginPath();
-        ctx.ellipse(-3, 5 + wingFlap + breath, 9, 5.5, -0.3, 0, Math.PI * 2);
+        ctx.ellipse(-2, 4 + wingFlap, 10, 6, -0.3, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = '#ff10a0';
         ctx.stroke();
-
-        ctx.fillStyle = '#ff10a0';
-        ctx.fillRect(-7, 3 + breath, 4, 2);
-        ctx.fillRect(11, 3 + breath, 4, 2);
-        ctx.fillStyle = 'rgba(255, 16, 160, 0.5)';
-        ctx.fillRect(-8, 4 + breath, 6, 1);
-        ctx.fillRect(10, 4 + breath, 6, 1);
 
         ctx.fillStyle = 'white';
-        ctx.strokeStyle = '#00f0ff';
-        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.arc(2, -5 + breath, 4.5, 0, Math.PI * 2);
+        ctx.arc(7, -5, 5, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
+        ctx.fillStyle = '#222';
         ctx.beginPath();
-        ctx.arc(11, -5 + breath, 4.5, 0, Math.PI * 2);
+        ctx.arc(8, -5, 2.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#f08a1f';
+        ctx.beginPath();
+        ctx.moveTo(13, 0);
+        ctx.lineTo(24, -2);
+        ctx.lineTo(24, 4);
+        ctx.closePath();
         ctx.fill();
         ctx.stroke();
 
-        if (blink) {
-            ctx.strokeStyle = '#ff10a0';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(-2, -5 + breath);
-            ctx.lineTo(6, -5 + breath);
-            ctx.moveTo(7, -5 + breath);
-            ctx.lineTo(15, -5 + breath);
-            ctx.stroke();
-        } else {
-            ctx.fillStyle = '#ff10a0';
-            ctx.beginPath();
-            ctx.arc(2.5, -5 + breath, 1.6, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(11.5, -5 + breath, 1.6, 0, Math.PI * 2);
-            ctx.fill();
-        }
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(0, 0, bird.r, 0, Math.PI * 2);
+        ctx.moveTo(13, 0);
+        ctx.lineTo(24, -2);
+        ctx.lineTo(24, 4);
+        ctx.closePath();
+        ctx.clip();
 
-        ctx.fillStyle = '#ff7700';
-        ctx.strokeStyle = '#ff10a0';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.ellipse(8, 5 + breath, 9, 4, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(0, 5 + breath);
-        ctx.lineTo(16, 5 + breath);
-        ctx.stroke();
+        const mGrd = ctx.createRadialGradient(bird.r * 0.6, -bird.r * 0.6, 0, bird.r * 0.6, -bird.r * 0.6, bird.r * 1.7);
+        mGrd.addColorStop(0, 'rgba(255, 16, 160, 0.6)');
+        mGrd.addColorStop(0.7, 'rgba(255, 16, 160, 0.08)');
+        mGrd.addColorStop(1, 'rgba(255, 16, 160, 0)');
+        ctx.fillStyle = mGrd;
+        ctx.fillRect(-30, -30, 60, 60);
+
+        const cGrd = ctx.createRadialGradient(-bird.r * 0.7, bird.r * 0.6, 0, -bird.r * 0.7, bird.r * 0.6, bird.r * 1.6);
+        cGrd.addColorStop(0, 'rgba(0, 240, 255, 0.5)');
+        cGrd.addColorStop(0.7, 'rgba(0, 240, 255, 0.06)');
+        cGrd.addColorStop(1, 'rgba(0, 240, 255, 0)');
+        ctx.fillStyle = cGrd;
+        ctx.fillRect(-30, -30, 60, 60);
+
+        ctx.restore();
 
         ctx.restore();
     }
