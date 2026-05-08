@@ -1,74 +1,32 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Website Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#70c5ce">
+    <title>Flappy Bird</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Website</h1>
-        <p>This is a simple website created from scratch.</p>
-    </header>
+    <div id="game-wrap">
+        <canvas id="game"></canvas>
+        <div id="score">0</div>
 
-    <main>
-        <section>
-            <h2>About Us</h2>
-            <p>Here’s where you add some information about the website or business.</p>
-        </section>
+        <div id="overlay" class="screen">
+            <h1>Flappy Bird</h1>
+            <p>Tap anywhere to flap.<br>Avoid the pipes!</p>
+            <button id="start-btn">Start</button>
+            <p class="hint">Best: <span id="best-start">0</span></p>
+        </div>
 
-        <section>
-            <h2>Our Services</h2>
-            <p>Describe the services you offer here.</p>
-        </section>
-    </main>
-
-    <footer>
-        <p>Contact us at: your-email@example.com</p>
-    </footer>
+        <div id="gameover" class="screen hidden">
+            <h1>Game Over</h1>
+            <p>Score: <span id="final-score">0</span></p>
+            <p>Best: <span id="best-score">0</span></p>
+            <button id="restart-btn">Play again</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-
-git add .
-git commit -m "Add index.html"
-git push origin main
-" "   # Adds a blank line to index.html as a minor change
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Website Title</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Website</h1>
-        <p>This is a simple website created from scratch.</p>
-    </header>
-
-    <main>
-        <section>
-            <h2>About Us</h2>
-            <p>Here’s where you add some information about the website or business.</p>
-        </section>
-
-        <section>
-            <h2>Our Services</h2>
-            <p>Describe the services you offer here.</p>
-        </section>
-    </main>
-
-    <footer>
-        <p>Contact us at: your-email@example.com</p>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
->>>>>>> 53ae2e335b7a3baf8ba82df5c39aa7523c663470
